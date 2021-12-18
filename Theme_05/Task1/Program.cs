@@ -13,7 +13,17 @@ namespace Task1
 
     class Program
     {
+        /// <summary>
+        /// Делит входную строку на массив строк по пробелам
+        /// </summary>
+        /// <param name="inputPhrase">Входная строка</param>
+        /// <returns>Массив слова</returns>
         static string[] SplitSentenceIntoWords(string line) => line.Split(' ');
+
+        /// <summary>
+        /// Печатает каждую строку из массива строк
+        /// </summary>
+        /// <param name="array">Массив строк</param>
         static void PrintEachWordFromArray(string[] array)
         {
             foreach (var word in array)
