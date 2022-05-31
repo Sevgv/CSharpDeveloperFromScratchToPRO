@@ -70,7 +70,7 @@ Console.WriteLine("введём 2 — заполнить данные и доб�
 var path = "db.csv";
 var line = BuildLine(1, DateTime.Now, "Севостьянов Глеб Валерьевич", 26, 176, DateOnly.FromDateTime(new DateTime(1995, 9, 7)), "Челябинск");
 
-//WriteLineToEndFile(path, line);
+// WriteLineToEndFile(path, line);
 
 var lines = await ReadFile(path);
 

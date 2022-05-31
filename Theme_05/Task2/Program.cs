@@ -44,6 +44,8 @@ namespace Task2
         {
             var text = Console.ReadLine();
 
+            if (text == null) return;
+
             Console.WriteLine("Исходный текст:");
             Console.WriteLine(text);
             Console.WriteLine();
