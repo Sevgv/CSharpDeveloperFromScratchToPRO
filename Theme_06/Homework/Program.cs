@@ -45,7 +45,10 @@ using System.Text;
 
 async Task<string[]> ReadFile(string path)
 {
-    return await File.ReadAllLinesAsync(path);
+    if (File.Exists(path))
+        return await File.ReadAllLinesAsync(path);
+    else
+        return null;
 }
 
 async void WriteLineToEndFile(string path, string line)
@@ -75,7 +78,8 @@ void OutputAllData(string[]? lines)
                 Console.Write($"{i} ");
             Console.WriteLine();
         }
-    } else
+    }
+    else
     {
         Console.WriteLine("Данные отсуствуют");
     }
@@ -84,7 +88,9 @@ void OutputAllData(string[]? lines)
 async Task<int> LastId(string path)
 {
     var lines = await ReadFile(path);
-    return int.Parse(lines.Last().Split('#').First());
+    return lines != null && lines.Any() 
+        ? int.Parse(lines.Last().Split('#').First()) 
+        : 0;
 }
 
 Console.WriteLine("введём 1 — вывести данные на экран;");
