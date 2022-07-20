@@ -40,6 +40,7 @@
 //Запись корректно выводится в консоль.
 //Файл корректно закрывается после записи и чтения.
 
+using System.Globalization;
 using System.Text;
 
 async Task<string[]> ReadFile(string path)
@@ -64,19 +65,58 @@ string BuildLine(int id, DateTime time, string fio, int age, double growth, Date
         .AppendLine().ToString();
 }
 
+void OutputAllData(string[]? lines)
+{
+    if (lines != null && lines.Any())
+    {
+        foreach (var l in lines)
+        {
+            foreach (var i in l.Split('#'))
+                Console.Write($"{i} ");
+            Console.WriteLine();
+        }
+    } else
+    {
+        Console.WriteLine("Данные отсуствуют");
+    }
+}
+
+async Task<int> LastId(string path)
+{
+    var lines = await ReadFile(path);
+    return int.Parse(lines.Last().Split('#').First());
+}
+
 Console.WriteLine("введём 1 — вывести данные на экран;");
 Console.WriteLine("введём 2 — заполнить данные и добавить новую запись в конец файла.");
 
 var path = "db.csv";
-var line = BuildLine(1, DateTime.Now, "Севостьянов Глеб Валерьевич", 26, 176, DateOnly.FromDateTime(new DateTime(1995, 9, 7)), "Челябинск");
 
-//WriteLineToEndFile(path, line);
+var input = Console.ReadLine();
+int.TryParse(input, out var key);
 
-var lines = await ReadFile(path);
-
-foreach (var l in lines) 
+switch (key)
 {
-    foreach (var i in l.Split('#'))
-        Console.Write($"{i} ");
-    Console.WriteLine();
+    case 1:
+        var lines = await ReadFile(path);
+        OutputAllData(lines);
+        break;
+    case 2:
+        Console.WriteLine("Введите ФИО");
+        var fio = Console.ReadLine();
+        Console.WriteLine("Введите возраст");
+        var age = Console.ReadLine();
+        Console.WriteLine("Введите рост");
+        var growth = Console.ReadLine();
+        Console.WriteLine("Введите дату рождения");
+        var date = Console.ReadLine();
+        Console.WriteLine("Введите город");
+        var city = Console.ReadLine();
+
+        var line = BuildLine(await LastId(path) + 1, DateTime.Now, fio, int.Parse(age), double.Parse(growth), DateOnly.Parse(date, new CultureInfo("ru-RU")), city);
+        WriteLineToEndFile(path, line);
+        break;
+    default:
+        break;
 }
+
