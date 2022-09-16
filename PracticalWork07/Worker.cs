@@ -61,7 +61,7 @@ namespace PracticalWork07
             }
         }
 
-        public override int GetHashCode() => Id.GetHashCode();
+        public override int GetHashCode() => Id;
 
         /// <summary>
         /// Получает строку нужного формата
