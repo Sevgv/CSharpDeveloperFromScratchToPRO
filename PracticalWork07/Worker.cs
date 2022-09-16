@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Drawing;
+using System.Text;
 
 namespace PracticalWork07
 {
@@ -45,6 +46,22 @@ namespace PracticalWork07
                 Console.WriteLine(fe.Message);
             }
         }
+
+        public override bool Equals(object? obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Worker worker = (Worker)obj;
+                return (Id == worker.Id);
+            }
+        }
+
+        public override int GetHashCode() => BuildLine().GetHashCode();
 
         /// <summary>
         /// Получает строку нужного формата
@@ -104,6 +121,6 @@ namespace PracticalWork07
         /// <summary>
         /// Место рождения
         /// </summary>
-        public string City { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;       
     }
 }

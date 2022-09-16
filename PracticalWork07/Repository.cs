@@ -140,26 +140,16 @@
             var workers = await GetAllWorkers();
             if (workers == null || !workers.Any()) return;
 
-            var newWorkers = new Worker[workers.Length-1];
             var index = Array.IndexOf(workers, await GetWorkerById(id));
 
-            bool flag = true;
-            for (var i = 0; i < newWorkers.Length; i++)
-            {
-                if (workers[i].Id != id && flag)
-                    newWorkers[i] = workers[i];
-                else
-                {
-                    flag = false;
-                    newWorkers[i] = workers[i+1];
-                }
-                    
-            }
-            
+            for (var i = index; i < workers.Length-1; i++)
+                workers[i] = workers[i+1];
+            Array.Resize(ref workers, workers.Length-1);
+        
             // происходит запись в файл всех Worker,
             // кроме удаляемого
             await File.WriteAllTextAsync(path, string.Empty);
-            foreach (var worker in newWorkers)
+            foreach (var worker in workers)
                 await WriteLineToEndFile(worker.BuildLine());
         }
 
