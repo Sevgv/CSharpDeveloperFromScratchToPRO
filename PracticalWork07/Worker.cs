@@ -6,45 +6,17 @@ namespace PracticalWork07
     /// <summary>
     /// Класс описывает сотрудника
     /// </summary>
-    class Worker
+    struct Worker
     {
-        /// <summary>
-        /// Конструктор Worker из отдельных полей
-        /// </summary>
-        /// <param name="fio"></param>
-        /// <param name="growth"></param>
-        /// <param name="birthdayDate"></param>
-        /// <param name="city"></param>
-        public Worker(string fio, double growth, DateOnly birthdayDate, string city)
+        public Worker(int id, DateTime timeAdding, string fio, int age, double growth, DateOnly birthdayDate, string city)
         {
+            Id = id;
+            TimeAdding = timeAdding;
             FIO = fio;
+            Age = age;
             Growth = growth;
             BirthdayDate = birthdayDate;
             City = city;
-        }
-
-        /// <summary>
-        /// Конструктор Worker из строки
-        /// </summary>
-        /// <param name="worker"></param>
-        public Worker(string worker)
-        {
-            var slices = worker.Split('#');
-            try
-            {
-                Id = int.TryParse(slices[0], out var id) ? id : throw new FormatException();
-                TimeAdding = DateTime.TryParse(slices[1], out var timeAdding) ? timeAdding : throw new FormatException();
-                FIO = !string.IsNullOrEmpty(slices[2]) ? slices[2] : throw new FormatException();
-                Age = int.TryParse(slices[3], out var age) ? age : throw new FormatException();
-                Growth = double.TryParse(slices[4], out var growth) ? growth : throw new FormatException();
-                BirthdayDate = DateOnly.TryParse(slices[5], out var birthdayDate) ? birthdayDate : throw new FormatException();
-                City = !string.IsNullOrEmpty(slices[6]) ? slices[6] : throw new FormatException();
-            }
-            catch (FormatException fe)
-            {
-                Console.WriteLine("Неверный формат данных");
-                Console.WriteLine(fe.Message);
-            }
         }
 
         public override bool Equals(object? obj)
@@ -78,22 +50,61 @@ namespace PracticalWork07
                 .Append($"{City, -20}")
                 .ToString();
         }
+        /// <summary>
+        /// Получает Worker из отдельных полей
+        /// </summary>
+        /// <param name="fio"></param>
+        /// <param name="growth"></param>
+        /// <param name="birthdayDate"></param>
+        /// <param name="city"></param>
+        /// <returns></returns>
+        public static Worker GetWorker(string fio, double growth, DateOnly birthdayDate, string city)
+        {
+            return new Worker
+            {
+                FIO = fio,
+                Growth = growth,
+                BirthdayDate = birthdayDate,
+                City = city
+            };          
+        }
+
+        /// <summary>
+        /// Получает Worker из строки
+        /// </summary>
+        /// <param name="worker"></param>
+        /// <returns></returns>
+        public static Worker GetWorker(string worker)
+        {
+            var slices = worker.Split('#');
+            try
+            {
+                return new Worker
+                {
+                    Id = int.TryParse(slices[0], out var id) ? id : throw new FormatException(),
+                    TimeAdding = DateTime.TryParse(slices[1], out var timeAdding) ? timeAdding : throw new FormatException(),
+                    FIO = !string.IsNullOrEmpty(slices[2]) ? slices[2] : throw new FormatException(),
+                    Age = int.TryParse(slices[3], out var age) ? age : throw new FormatException(),
+                    Growth = double.TryParse(slices[4], out var growth) ? growth : throw new FormatException(),
+                    BirthdayDate = DateOnly.TryParse(slices[5], out var birthdayDate) ? birthdayDate : throw new FormatException(),
+                    City = !string.IsNullOrEmpty(slices[6]) ? slices[6] : throw new FormatException()
+                };
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine("Неверный формат данных");
+                Console.WriteLine(fe.Message);
+                return new Worker();
+            }
+        }
 
         /// <summary>
         /// Получает строку нужного формата
         /// </summary>
         /// <returns>Строка для записи в файл</returns>
-        public string BuildLine()
-        {
-            return new StringBuilder($"{Id}#")
-                .Append($"{TimeAdding}#")
-                .Append($"{FIO}#")
-                .Append($"{Age}#")
-                .Append($"{Growth}#")
-                .Append($"{BirthdayDate}#")
-                .Append($"{City}")
-                .AppendLine().ToString();
-        }
+        public string BuildLine() => 
+            string.Join("#", Id, TimeAdding, FIO, Age, Growth, BirthdayDate, City) + "\n";
+
         /// <summary>
         /// Идентификатор
         /// </summary>

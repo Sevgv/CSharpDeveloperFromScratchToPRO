@@ -1,7 +1,15 @@
 ﻿namespace PracticalWork07
 {
+    /// <summary>
+    /// Содержит методы для проверки ввода с клавиатуры для разных типов данных
+    /// </summary>
     public static class InputValidation
     {
+        /// <summary>
+        /// Считывает строку и проверяет формат целого числа
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public static bool ReadInt(out int number)
         {
             var str = Console.ReadLine();
@@ -12,6 +20,11 @@
             return false;
         }
 
+        /// <summary>
+        /// Считывает строку и проверяет формат числа с плавающей запятой
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public static bool ReadDouble(out double number)
         {
             Console.WriteLine("Введите число c плавающей точкой");
@@ -23,6 +36,11 @@
             return false;
         }
 
+        /// <summary>
+        /// Считывает строку и проверяет формат даты
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static bool ReadDateOnly(out DateOnly date)
         {
             Console.WriteLine("Введите дату в формате dd.MM.yyyy");
@@ -34,6 +52,11 @@
             return false;
         }
 
+        /// <summary>
+        /// Считывает строку и проверяет формат даты и времени
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public static bool ReadDateTime(out DateTime time)
         {
             Console.WriteLine("Введите время в формате dd.MM.yyyy HH:mm:ss");
@@ -45,6 +68,11 @@
             return false;
         }
 
+        /// <summary>
+        /// Считывает строку и проверяет строку что не пустая
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static bool ReadString(out string str)
         {
             str = Console.ReadLine() ?? string.Empty;

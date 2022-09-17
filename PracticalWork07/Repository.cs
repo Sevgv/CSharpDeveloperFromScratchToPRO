@@ -30,7 +30,7 @@
 
             var workers = new Worker[lines.Length];
             for (var i = 0; i < lines.Length; i++)
-                workers[i] = new Worker(lines[i]);
+                workers[i] = Worker.GetWorker(lines[i]);
             return workers.OrderBy(x => x.Id).ToArray();
         }
 
@@ -52,8 +52,8 @@
                 Console.WriteLine(e.Message);
                 return null;
             }
-        } 
-            
+        }
+
         /// <summary>
         /// Создание сотрудника
         /// </summary>
@@ -73,7 +73,7 @@
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }            
+            }
         }
 
         /// <summary>
@@ -85,21 +85,23 @@
         {
             try
             {
-                var editingWorker = await GetWorkerById(id);
-                if (editingWorker == null) 
+                var getedWorker = await GetWorkerById(id);
+                if (getedWorker == null)
                     throw new Exception("Сотрудник отсутствует");
+
+                var editingWorker = (Worker)getedWorker;
 
                 editingWorker.FIO = !string.IsNullOrEmpty(worker.FIO)
                     ? worker.FIO
                     : editingWorker.FIO;
-                editingWorker.Age = worker.Age > 0 
-                    ? worker.Age 
+                editingWorker.Age = worker.Age > 0
+                    ? worker.Age
                     : editingWorker.Age;
                 editingWorker.Growth = worker.Growth > 0
                     ? worker.Growth
                     : editingWorker.Growth;
-                editingWorker.BirthdayDate = DateOnly.MinValue != worker.BirthdayDate 
-                    ? worker.BirthdayDate 
+                editingWorker.BirthdayDate = DateOnly.MinValue != worker.BirthdayDate
+                    ? worker.BirthdayDate
                     : editingWorker.BirthdayDate;
                 editingWorker.City = !string.IsNullOrEmpty(worker.City)
                     ? worker.City
@@ -122,11 +124,11 @@
                 await File.WriteAllTextAsync(path, string.Empty);
                 foreach (var w in newWorkers)
                     await WriteLineToEndFile(w.BuildLine());
-            } 
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }           
+            }
         }
 
         /// <summary>
@@ -142,10 +144,10 @@
 
             var index = Array.IndexOf(workers, await GetWorkerById(id));
 
-            for (var i = index; i < workers.Length-1; i++)
-                workers[i] = workers[i+1];
-            Array.Resize(ref workers, workers.Length-1);
-        
+            for (var i = index; i < workers.Length - 1; i++)
+                workers[i] = workers[i + 1];
+            Array.Resize(ref workers, workers.Length - 1);
+
             // происходит запись в файл всех Worker,
             // кроме удаляемого
             await File.WriteAllTextAsync(path, string.Empty);
@@ -181,10 +183,10 @@
             Worker[] workers = new Worker[count];
             for (var i = 0; i < workers.Length; i++)
             {
-                workers[i] = new Worker(
-                    $"Name{i}", 
-                    new Random().Next(150, 200), 
-                    DateOnly.FromDateTime(DateTime.Now.AddYears(new Random().Next(-60, -18))), 
+                workers[i] = Worker.GetWorker(
+                    $"Name{i}",
+                    new Random().Next(150, 200),
+                    DateOnly.FromDateTime(DateTime.Now.AddYears(new Random().Next(-60, -18))),
                     $"City{i}");
             }
             return workers;
@@ -207,8 +209,8 @@
         /// <returns>Массив строк</returns>
         private async Task<string[]> ReadFile()
         {
-            return File.Exists(path) 
-                ? await File.ReadAllLinesAsync(path) 
+            return File.Exists(path)
+                ? await File.ReadAllLinesAsync(path)
                 : Array.Empty<string>();
         }
 
@@ -242,6 +244,6 @@
             var age = DateOnly.FromDateTime(now).Year - birthdayDate.Year;
             if (birthdayDate.ToDateTime(new TimeOnly(0, 0)) > now.AddYears(-age)) age--;
             return age;
-        }
+        }      
     }
 }

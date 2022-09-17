@@ -54,7 +54,7 @@ while (working)
                 Console.WriteLine("Введите город");
                 if (!InputValidation.ReadString(out var city)) break;
 
-                var worker = new Worker(fio, growth, date, city);
+                var worker = Worker.GetWorker(fio, growth, date, city);
                 await rep.AddWorker(worker);
                 break;
             }           
@@ -75,7 +75,7 @@ while (working)
                 Console.WriteLine("Введите город или пробел, если не хотите изменять");
                 if (!InputValidation.ReadString(out var city)) city = string.Empty;
 
-                var worker = new Worker(fio, growth, date, city);
+                var worker = Worker.GetWorker(fio, growth, date, city);
                 await rep.EditWorker(id, worker);
                 break;
             }
