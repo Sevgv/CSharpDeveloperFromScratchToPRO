@@ -1,10 +1,11 @@
 ﻿using PracticalWork07;
 
+var path = "db.csv";
+
 var working = true;
 while (working)
 {
-    var path = "db.csv";
-    var rep = new Repository(path);
+    Repository rep = new(path);
 
     Console.WriteLine("Выберите пункт меню:");
 

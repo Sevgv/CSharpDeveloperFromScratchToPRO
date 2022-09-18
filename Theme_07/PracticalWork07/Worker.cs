@@ -4,7 +4,7 @@ using System.Text;
 namespace PracticalWork07
 {
     /// <summary>
-    /// Класс описывает сотрудника
+    /// Структура описывает сотрудника
     /// </summary>
     struct Worker
     {

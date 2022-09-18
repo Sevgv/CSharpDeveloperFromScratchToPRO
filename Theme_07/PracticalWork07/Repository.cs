@@ -85,11 +85,11 @@
         {
             try
             {
-                var getedWorker = await GetWorkerById(id);
-                if (getedWorker == null)
+                var receivedWorker = await GetWorkerById(id);
+                if (receivedWorker == null)
                     throw new Exception("Сотрудник отсутствует");
 
-                var editingWorker = (Worker)getedWorker;
+                var editingWorker = (Worker)receivedWorker;
 
                 editingWorker.FIO = !string.IsNullOrEmpty(worker.FIO)
                     ? worker.FIO
