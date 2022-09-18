@@ -29,5 +29,5 @@ void Print(List<int> numbers)
 }
 
 void RemoveNumbersGreater25AndLess50(ref List<int> numbers) =>
-    numbers = numbers.Where(i => i > 25 && i < 50).ToList();
+    numbers = numbers.Where(i => i < 25 || i > 50).ToList();
 
